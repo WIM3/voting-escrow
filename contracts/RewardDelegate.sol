@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity 0.7.6;
+pragma solidity ^0.8.0;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 import { IRewardDelegate } from "./interface/IRewardDelegate.sol";
 
 contract RewardDelegate is IRewardDelegate {
     using Address for address;
-    using SafeMath for uint256;
 
     // truster => beneficiaryCandidate
     mapping(address => address) internal _beneficiaryCandidateMap;
@@ -44,7 +42,7 @@ contract RewardDelegate is IRewardDelegate {
         require(_beneficiaryMap[truster] != beneficiary, "RD_RUB");
 
         _beneficiaryMap[truster] = beneficiary;
-        _trusterCountMap[beneficiary] = _trusterCountMap[beneficiary].add(1);
+        _trusterCountMap[beneficiary] = _trusterCountMap[beneficiary] + 1;
 
         emit BeneficiarySet(truster, beneficiary);
     }
@@ -58,7 +56,7 @@ contract RewardDelegate is IRewardDelegate {
         delete _beneficiaryCandidateMap[truster];
         delete _beneficiaryMap[truster];
 
-        _trusterCountMap[beneficiary] = _trusterCountMap[beneficiary].sub(1);
+        _trusterCountMap[beneficiary] = _trusterCountMap[beneficiary] + 1;
 
         emit BeneficiaryCleared(truster, beneficiary);
     }
@@ -84,9 +82,9 @@ contract RewardDelegate is IRewardDelegate {
         address beneficiary = _beneficiaryMap[user];
 
         if (beneficiary == address(0)) {
-            return (user, _trusterCountMap[user].add(1));
+            return (user, _trusterCountMap[user] + 1);
         }
 
-        return (beneficiary, _trusterCountMap[beneficiary].add(1));
+        return (beneficiary, _trusterCountMap[beneficiary] + 1);
     }
 }

@@ -1,20 +1,18 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity 0.7.6;
+pragma solidity ^0.8.0;
 pragma abicoder v2;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
-import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import { SafeERC20, IERC20 } from "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+import { ReentrancyGuard } from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
-import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 import { FullMath } from "@uniswap/v3-core/contracts/libraries/FullMath.sol";
 import { ISurplusBeneficiary } from "./interface/ISurplusBeneficiary.sol";
 import { IFeeDistributor } from "./interface/IFeeDistributor.sol";
 
 contract SurplusBeneficiary is ISurplusBeneficiary, ReentrancyGuard, Ownable {
     using Address for address;
-    using SafeMath for uint256;
 
     address internal _token;
 
@@ -114,7 +112,7 @@ contract SurplusBeneficiary is ISurplusBeneficiary, ReentrancyGuard, Ownable {
         if (tokenAmountToTreasury != tokenAmount) {
             address feeDistributor = _feeDistributor;
 
-            SafeERC20.safeApprove(IERC20(token), feeDistributor, tokenAmount.sub(tokenAmountToTreasury));
+            SafeERC20.safeApprove(IERC20(token), feeDistributor, tokenAmount - tokenAmountToTreasury);
 
             // SB_FDBF: fee distributor burn failed
             require(IFeeDistributor(feeDistributor).burn(token), "SB_FDBF");
@@ -125,7 +123,7 @@ contract SurplusBeneficiary is ISurplusBeneficiary, ReentrancyGuard, Ownable {
         // SB_BNZ: balance is not zero
         require(balanceAfter == 0, "SB_BNZ");
 
-        emit Dispatch(tokenAmountToTreasury, tokenAmount.sub(tokenAmountToTreasury));
+        emit Dispatch(tokenAmountToTreasury, tokenAmount - tokenAmountToTreasury);
     }
 
     //

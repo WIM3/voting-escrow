@@ -10,17 +10,35 @@ import "solidity-coverage"
 
 const config: HardhatUserConfig = {
     solidity: {
-        version: "0.7.6",
-        settings: {
-            optimizer: { enabled: true, runs: 100 },
-            evmVersion: "berlin",
-            // for smock to mock contracts
-            outputSelection: {
-                "*": {
-                    "*": ["storageLayout"],
+        compilers: [
+            {
+                version: "0.7.6",
+                settings: {
+                    optimizer: { enabled: true, runs: 100 },
+                    evmVersion: "berlin",
+                    // for smock to mock contracts
+                    outputSelection: {
+                        "*": {
+                            "*": ["storageLayout"],
+                        },
+                    },
                 },
             },
-        },
+            {
+                version: "0.8.20",
+                settings: {
+                    optimizer: { enabled: true, runs: 100 },
+                    evmVersion: "berlin",
+                    // for smock to mock contracts
+                    outputSelection: {
+                        "*": {
+                            "*": ["storageLayout"],
+                        },
+                    },
+                },
+            },
+        ]
+        
     },
     vyper: {
         compilers: [{ version: "0.3.3" }, { version: "0.3.6" }],

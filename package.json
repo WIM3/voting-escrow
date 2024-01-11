@@ -1,5 +1,5 @@
 {
-  "name": "@perp/voting-escrow",
+  "name": "@wim3/voting-escrow",
   "version": "1.3.0",
   "description": "Perpetual Protocol voting escrow contracts",
   "license": "MIT",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/perpetual-protocol/perp-voting-escrow.git"
+    "url": "https://github.com/WIM3/voting-escrow.git"
   },
   "homepage": "https://perp.com/",
   "keywords": [
@@ -47,9 +47,9 @@
     "slither": "ts-node --files scripts/slither.ts"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "3.4.0",
+    "@openzeppelin/contracts": "4.3.1",
     "@openzeppelin/contracts-upgradeable": "3.4.2",
-    "@uniswap/v3-core": "https://github.com/Uniswap/uniswap-v3-core/tarball/v1.0.0"
+    "@uniswap/v3-core": "1.0.2-solc-0.8-simulate"
   },
   "devDependencies": {
     "@defi-wonderland/smock": "2.0.7",
